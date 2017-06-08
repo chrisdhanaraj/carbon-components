@@ -1,4 +1,4 @@
-import 'core-js/modules/es6.weak-map'; // For PhantomJS
+
 import '../../demo/polyfills/custom-event';
 import Toolbar from '../../src/components/toolbar/toolbar';
 import ToolbarHTML from '../../src/components/toolbar/toolbar.html';

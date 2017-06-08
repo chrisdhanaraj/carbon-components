@@ -1,4 +1,4 @@
-import 'core-js/modules/es6.weak-map'; // For PhantomJS
+
 import Tab from '../../src/components/tabs/tabs';
 
 describe('Test tabs', function () {

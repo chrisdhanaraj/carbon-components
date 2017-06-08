@@ -1,4 +1,4 @@
-import 'core-js/modules/es6.weak-map'; // For PhantomJS
+
 import Pagination from '../../src/components/pagination/pagination';
 
 describe('Test pagination', function () {

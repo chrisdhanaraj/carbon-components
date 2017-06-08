@@ -1,4 +1,4 @@
-import 'core-js/modules/es6.weak-map'; // For PhantomJS
+
 import Modal from '../../src/components/modal/modal';
 import ModalHtml from '../../src/components/modal/modal.html';
 import EventManager from '../utils/event-manager';

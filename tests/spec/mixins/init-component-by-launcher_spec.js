@@ -1,4 +1,4 @@
-import 'core-js/modules/es6.weak-map'; // For PhantomJS
+
 import mixin from '../../../src/globals/js/misc/mixin';
 import initComponentByLauncher from '../../../src/globals/js/mixins/init-component-by-launcher';
 import EventManager from '../../utils/event-manager';

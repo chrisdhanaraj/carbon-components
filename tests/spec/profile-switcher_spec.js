@@ -1,4 +1,4 @@
-import 'core-js/modules/es6.weak-map'; // For PhantomJS
+
 import ProfileSwitcher from '../../src/components/unified-header/profile-switcher';
 import unifiedHeaderHtml from '../../src/components/unified-header/unified-header.html';
 
