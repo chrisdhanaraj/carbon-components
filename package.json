@@ -29,7 +29,6 @@
     "style guide"
   ],
   "dependencies": {
-    "@ibma/karma-ibma": "^2.2.0",
     "carbon-icons": "^6.0.4",
     "flatpickr": "2.6.3",
     "lodash.debounce": "^4.0.8"
