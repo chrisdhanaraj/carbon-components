@@ -19,6 +19,7 @@ import Dropdown from './components/dropdown/dropdown';
 import Card from './components/card/card';
 import NumberInput from './components/number-input/number-input';
 import DataTable from './components/data-table/data-table';
+import DatePicker from './components/date-picker/date-picker';
 import DetailPageHeader
   from './components/detail-page-header/detail-page-header';
 import LeftNav from './components/unified-header/left-nav';
@@ -31,9 +32,9 @@ import CopyButton from './components/copy-button/copy-button';
 import Notification from './components/notification/notification';
 import Toolbar from './components/toolbar/toolbar';
 import Tooltip from './components/tooltip/tooltip';
-import ProgressIndicator
-  from './components/progress-indicator/progress-indicator';
+import ProgressIndicator from './components/progress-indicator/progress-indicator';
 import FloatingMenu from './components/floating-menu/floating-menu';
+import StructuredList from './components/structured-list/structured-list';
 
 const settings = {};
 
@@ -184,6 +185,16 @@ export {
    * @type CopyButton
    */
   CopyButton,
+  /**
+   * StructuredList.
+   * @type StructuredList
+   */
+  StructuredList,
+  /**
+   * DatePicker.
+   * @type DatePicker
+   */
+  DatePicker,
 };
 
 /**
@@ -222,6 +233,8 @@ const init = () => {
     Toolbar.init();
     Tooltip.init();
     ProgressIndicator.init();
+    StructuredList.init();
+    DatePicker.init();
     // Floating menu instances are created by Tooltip, etc. and thus not for automatic instantiation
   }
 };

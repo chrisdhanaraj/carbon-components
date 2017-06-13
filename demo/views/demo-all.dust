@@ -1,20 +1,29 @@
+
 <!DOCTYPE html>
 <html lang="en">
 
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width">
-  <title>Bluemix Components</title>
+  <title>Carbon Components</title>
   <link rel="stylesheet" href="/demo.css">
   <style>
     body {
       padding-top: 72px;
     }
+
+    .offleft {
+      position: absolute;
+      top: 0;
+      left: -10000px;
+      width: 1px;
+      height: 1px;
+      overflow: hidden;
+    }
   </style>
 </head>
 
 <body class="bx--body">
-  <button class="bx--btn theme-switcher" data-theme-switcher>Theme Switcher</button>
   <div data-demo-switcher class="demo-switcher__container">
     <input id="flex-col" data-demo-col class="bx--radio" type="radio" value="col" name="radio">
     <label for="flex-col" data-demo-col class="bx--radio__label">
@@ -33,8 +42,11 @@
     {html|s}
   </div>
 
+  <!-- Pseudo element to demonstrate focus-wrap behavior (focus trap) -->
+  <input type="text" class="offleft">
+
   <!-- Scripts -->
-  <!-- <script src="../../dist/bluemix-components.min.js"></script> -->
+  <!-- <script src="/carbon-components.min.js"></script> -->
   <script src="/demo.js"></script>
   <!-- Disable Auto Init with this flag -->
   <!-- true = JavaScript will not initialize automatically -->
