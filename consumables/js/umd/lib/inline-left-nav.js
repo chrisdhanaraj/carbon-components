@@ -138,6 +138,9 @@
       };
 
       _this.constructor.components.set(_this.element, _this);
+
+      _this.keepOpen = _this.element.dataset.keepOpen === undefined ? _this.options.keepOpen : Boolean(_this.element.dataset.keepOpen);
+
       _this.hookListItemsEvents();
       return _this;
     }
@@ -166,16 +169,21 @@
 
         var allNestedItems = [].concat((0, _toConsumableArray3.default)(document.querySelectorAll(this.options.selectorLeftNavListItemHasChildren)));
         var isOpen = listItem.classList.contains(this.options.classExpandedLeftNavListItem);
-        allNestedItems.forEach(function (currentItem) {
-          if (currentItem !== listItem) {
-            (0, _toggleClass2.default)(currentItem, _this3.options.classExpandedLeftNavListItem, false);
-          }
-        });
+        var list = listItem.querySelector(this.options.selectorLeftNavNestedList);
+        var listItems = [].concat((0, _toConsumableArray3.default)(list.querySelectorAll(this.options.selectorLeftNavNestedListItem)));
+
+        if (!this.keepOpen) {
+          allNestedItems.forEach(function (currentItem) {
+            if (currentItem !== listItem) {
+              (0, _toggleClass2.default)(currentItem, _this3.options.classExpandedLeftNavListItem, false);
+            }
+          });
+        }
+
         if (!('inlineLeftNavItemLink' in evt.target.dataset)) {
           (0, _toggleClass2.default)(listItem, this.options.classExpandedLeftNavListItem, !isOpen);
         }
-        var list = listItem.querySelector(this.options.selectorLeftNavNestedList);
-        var listItems = [].concat((0, _toConsumableArray3.default)(list.querySelectorAll(this.options.selectorLeftNavNestedListItem)));
+
         listItems.forEach(function (item) {
           if (isOpen) {
             // eslint-disable-next-line no-param-reassign
@@ -209,7 +217,9 @@
     classLeftNavExpanding: 'bx--inline-left-nav--expanding',
     // Event
     eventBeforeLeftNavToggled: 'left-nav-beingtoggled',
-    eventAfterLeftNavToggled: 'left-nav-toggled'
+    eventAfterLeftNavToggled: 'left-nav-toggled',
+    // Option
+    keepOpen: false
   };
   exports.default = InlineLeftNav;
 });

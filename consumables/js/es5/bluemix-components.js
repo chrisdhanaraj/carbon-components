@@ -4531,8 +4531,15 @@ var BluemixComponents =
 	    value: function closeMenu() {
 	      this.element.classList.remove(this.options.classActiveLeftNav);
 	      var toggleOpenNode = this.element.ownerDocument.querySelector(this.options.selectorLeftNavToggleOpen);
+	      if (!toggleOpenNode) {
+	        throw new TypeError('Cannot find the trigger button.');
+	      }
 	      toggleOpenNode.classList.remove(this.options.classActiveTrigger);
-	      this.element.querySelector(this.options.selectorLeftNav).parentNode.setAttribute('aria-expanded', 'false');
+	      var leftNavContainer = this.element.querySelector(this.options.selectorLeftNav);
+	      if (!leftNavContainer) {
+	        throw new TypeError('Cannot find the nav.');
+	      }
+	      leftNavContainer.parentNode.setAttribute('aria-expanded', 'false');
 	      toggleOpenNode.removeAttribute('aria-expanded');
 	    }
 	
@@ -4543,16 +4550,23 @@ var BluemixComponents =
 	  }, {
 	    key: 'toggleMenu',
 	    value: function toggleMenu() {
-	      var leftNavContainer = this.element.querySelector(this.options.selectorLeftNav).parentNode;
+	      var leftNavContainer = this.element.querySelector(this.options.selectorLeftNav);
+	      if (!leftNavContainer) {
+	        throw new TypeError('Cannot find the nav.');
+	      }
+	      var element = leftNavContainer.parentNode;
 	      this.element.classList.toggle(this.options.classActiveLeftNav);
 	      var toggleOpenNode = this.element.ownerDocument.querySelector(this.options.selectorLeftNavToggleOpen);
+	      if (!toggleOpenNode) {
+	        throw new TypeError('Cannot find the trigger button.');
+	      }
 	      toggleOpenNode.classList.toggle(this.options.classActiveTrigger);
-	      if (leftNavContainer.getAttribute('aria-expanded') === 'false') {
-	        leftNavContainer.setAttribute('aria-expanded', 'true');
+	      if (element.getAttribute('aria-expanded') === 'false') {
+	        element.setAttribute('aria-expanded', 'true');
 	        toggleOpenNode.setAttribute('aria-expanded', 'true');
 	        this.focusIndex = 0;
 	      } else {
-	        leftNavContainer.setAttribute('aria-expanded', 'false');
+	        element.setAttribute('aria-expanded', 'false');
 	        toggleOpenNode.removeAttribute('aria-expanded');
 	      }
 	    }
@@ -4560,6 +4574,9 @@ var BluemixComponents =
 	    key: 'onKeyDown',
 	    value: function onKeyDown(evt) {
 	      var leftNavContainer = document.querySelector('[data-left-nav]');
+	      if (!leftNavContainer) {
+	        throw new TypeError('Cannot find the nav.');
+	      }
 	      var navItems = [].concat(_toConsumableArray(leftNavContainer.getElementsByClassName('bx--parent-item__link')));
 	
 	      var visibleNavItems = navItems.filter(function (item) {
@@ -4627,6 +4644,9 @@ var BluemixComponents =
 	      var _this2 = this;
 	
 	      var openBtn = this.element.ownerDocument.querySelector(this.options.selectorLeftNavToggleOpen);
+	      if (!openBtn) {
+	        throw new TypeError('Cannot find the trigger button.');
+	      }
 	      // on btn click or enter press or space press
 	      openBtn.addEventListener('click', function () {
 	        _this2.toggleMenu();
@@ -4638,8 +4658,11 @@ var BluemixComponents =
 	          openBtn.focus();
 	          _this2.closeMenu();
 	        } else {
-	          var toggleOpen = _this2.element.ownerDocument.querySelector(_this2.options.selectorLeftNavToggleOpen);
-	          if (toggleOpen.classList.contains(_this2.options.classActiveTrigger)) {
+	          var toggleOpenNode = _this2.element.ownerDocument.querySelector(_this2.options.selectorLeftNavToggleOpen);
+	          if (!toggleOpenNode) {
+	            throw new TypeError('Cannot find the trigger button.');
+	          }
+	          if (toggleOpenNode.classList.contains(_this2.options.classActiveTrigger)) {
 	            _this2.onKeyDown = _this2.onKeyDown.bind(_this2);
 	            _this2.onKeyDown(evt);
 	          }
@@ -4708,9 +4731,14 @@ var BluemixComponents =
 	    value: function handleDocumentClick(evt) {
 	      var clickTarget = evt.target;
 	      var isOfSelf = this.element.contains(clickTarget);
-	      var isToggleBtn = this.element.ownerDocument.querySelector(this.options.selectorLeftNavToggleOpen).contains(clickTarget);
+	      var toggleOpenNode = this.element.ownerDocument.querySelector(this.options.selectorLeftNavToggleOpen);
+	      if (!toggleOpenNode) {
+	        throw new TypeError('Cannot find the trigger button.');
+	      }
+	      var isToggleBtn = toggleOpenNode.contains(clickTarget);
 	      var isOpen = this.element.classList.contains(this.options.classActiveLeftNav);
-	      var isUnifiedHeader = this.element.ownerDocument.querySelector('[data-unified-header]').contains(clickTarget);
+	      var unifiedHeader = this.element.ownerDocument.querySelector('[data-unified-header]');
+	      var isUnifiedHeader = unifiedHeader && unifiedHeader.contains(clickTarget);
 	      var shouldClose = !isOfSelf && isOpen && !isToggleBtn && !isUnifiedHeader;
 	
 	      if (isOfSelf && this.element.tagName === 'A') {
@@ -4922,6 +4950,9 @@ var BluemixComponents =
 	    };
 	
 	    _this.constructor.components.set(_this.element, _this);
+	
+	    _this.keepOpen = _this.element.dataset.keepOpen === undefined ? _this.options.keepOpen : Boolean(_this.element.dataset.keepOpen);
+	
 	    _this.hookListItemsEvents();
 	    return _this;
 	  }
@@ -4958,16 +4989,21 @@ var BluemixComponents =
 	
 	      var allNestedItems = [].concat(_toConsumableArray(document.querySelectorAll(this.options.selectorLeftNavListItemHasChildren)));
 	      var isOpen = listItem.classList.contains(this.options.classExpandedLeftNavListItem);
-	      allNestedItems.forEach(function (currentItem) {
-	        if (currentItem !== listItem) {
-	          (0, _toggleClass2.default)(currentItem, _this3.options.classExpandedLeftNavListItem, false);
-	        }
-	      });
+	      var list = listItem.querySelector(this.options.selectorLeftNavNestedList);
+	      var listItems = [].concat(_toConsumableArray(list.querySelectorAll(this.options.selectorLeftNavNestedListItem)));
+	
+	      if (!this.keepOpen) {
+	        allNestedItems.forEach(function (currentItem) {
+	          if (currentItem !== listItem) {
+	            (0, _toggleClass2.default)(currentItem, _this3.options.classExpandedLeftNavListItem, false);
+	          }
+	        });
+	      }
+	
 	      if (!('inlineLeftNavItemLink' in evt.target.dataset)) {
 	        (0, _toggleClass2.default)(listItem, this.options.classExpandedLeftNavListItem, !isOpen);
 	      }
-	      var list = listItem.querySelector(this.options.selectorLeftNavNestedList);
-	      var listItems = [].concat(_toConsumableArray(list.querySelectorAll(this.options.selectorLeftNavNestedListItem)));
+	
 	      listItems.forEach(function (item) {
 	        if (isOpen) {
 	          // eslint-disable-next-line no-param-reassign
@@ -5020,7 +5056,9 @@ var BluemixComponents =
 	  classLeftNavExpanding: 'bx--inline-left-nav--expanding',
 	  // Event
 	  eventBeforeLeftNavToggled: 'left-nav-beingtoggled',
-	  eventAfterLeftNavToggled: 'left-nav-toggled'
+	  eventAfterLeftNavToggled: 'left-nav-toggled',
+	  // Option
+	  keepOpen: false
 	};
 	exports.default = InlineLeftNav;
 

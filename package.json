@@ -1,6 +1,6 @@
 {
   "name": "carbon-components",
-  "version": "6.19.1",
+  "version": "6.20.0",
   "description": "Bluemix Components is a component library for Bluemix",
   "jsnext:main": "consumables/js/es2015/index",
   "main": "consumables/js/umd/lib/index",

@@ -94,23 +94,37 @@
       value: function closeMenu() {
         this.element.classList.remove(this.options.classActiveLeftNav);
         var toggleOpenNode = this.element.ownerDocument.querySelector(this.options.selectorLeftNavToggleOpen);
+        if (!toggleOpenNode) {
+          throw new TypeError('Cannot find the trigger button.');
+        }
         toggleOpenNode.classList.remove(this.options.classActiveTrigger);
-        this.element.querySelector(this.options.selectorLeftNav).parentNode.setAttribute('aria-expanded', 'false');
+        var leftNavContainer = this.element.querySelector(this.options.selectorLeftNav);
+        if (!leftNavContainer) {
+          throw new TypeError('Cannot find the nav.');
+        }
+        leftNavContainer.parentNode.setAttribute('aria-expanded', 'false');
         toggleOpenNode.removeAttribute('aria-expanded');
       }
     }, {
       key: 'toggleMenu',
       value: function toggleMenu() {
-        var leftNavContainer = this.element.querySelector(this.options.selectorLeftNav).parentNode;
+        var leftNavContainer = this.element.querySelector(this.options.selectorLeftNav);
+        if (!leftNavContainer) {
+          throw new TypeError('Cannot find the nav.');
+        }
+        var element = leftNavContainer.parentNode;
         this.element.classList.toggle(this.options.classActiveLeftNav);
         var toggleOpenNode = this.element.ownerDocument.querySelector(this.options.selectorLeftNavToggleOpen);
+        if (!toggleOpenNode) {
+          throw new TypeError('Cannot find the trigger button.');
+        }
         toggleOpenNode.classList.toggle(this.options.classActiveTrigger);
-        if (leftNavContainer.getAttribute('aria-expanded') === 'false') {
-          leftNavContainer.setAttribute('aria-expanded', 'true');
+        if (element.getAttribute('aria-expanded') === 'false') {
+          element.setAttribute('aria-expanded', 'true');
           toggleOpenNode.setAttribute('aria-expanded', 'true');
           this.focusIndex = 0;
         } else {
-          leftNavContainer.setAttribute('aria-expanded', 'false');
+          element.setAttribute('aria-expanded', 'false');
           toggleOpenNode.removeAttribute('aria-expanded');
         }
       }
@@ -118,6 +132,9 @@
       key: 'onKeyDown',
       value: function onKeyDown(evt) {
         var leftNavContainer = document.querySelector('[data-left-nav]');
+        if (!leftNavContainer) {
+          throw new TypeError('Cannot find the nav.');
+        }
         var navItems = [].concat((0, _toConsumableArray3.default)(leftNavContainer.getElementsByClassName('bx--parent-item__link')));
 
         var visibleNavItems = navItems.filter(function (item) {
@@ -185,6 +202,9 @@
         var _this2 = this;
 
         var openBtn = this.element.ownerDocument.querySelector(this.options.selectorLeftNavToggleOpen);
+        if (!openBtn) {
+          throw new TypeError('Cannot find the trigger button.');
+        }
         // on btn click or enter press or space press
         openBtn.addEventListener('click', function () {
           _this2.toggleMenu();
@@ -196,8 +216,11 @@
             openBtn.focus();
             _this2.closeMenu();
           } else {
-            var toggleOpen = _this2.element.ownerDocument.querySelector(_this2.options.selectorLeftNavToggleOpen);
-            if (toggleOpen.classList.contains(_this2.options.classActiveTrigger)) {
+            var toggleOpenNode = _this2.element.ownerDocument.querySelector(_this2.options.selectorLeftNavToggleOpen);
+            if (!toggleOpenNode) {
+              throw new TypeError('Cannot find the trigger button.');
+            }
+            if (toggleOpenNode.classList.contains(_this2.options.classActiveTrigger)) {
               _this2.onKeyDown = _this2.onKeyDown.bind(_this2);
               _this2.onKeyDown(evt);
             }
@@ -248,9 +271,14 @@
       value: function handleDocumentClick(evt) {
         var clickTarget = evt.target;
         var isOfSelf = this.element.contains(clickTarget);
-        var isToggleBtn = this.element.ownerDocument.querySelector(this.options.selectorLeftNavToggleOpen).contains(clickTarget);
+        var toggleOpenNode = this.element.ownerDocument.querySelector(this.options.selectorLeftNavToggleOpen);
+        if (!toggleOpenNode) {
+          throw new TypeError('Cannot find the trigger button.');
+        }
+        var isToggleBtn = toggleOpenNode.contains(clickTarget);
         var isOpen = this.element.classList.contains(this.options.classActiveLeftNav);
-        var isUnifiedHeader = this.element.ownerDocument.querySelector('[data-unified-header]').contains(clickTarget);
+        var unifiedHeader = this.element.ownerDocument.querySelector('[data-unified-header]');
+        var isUnifiedHeader = unifiedHeader && unifiedHeader.contains(clickTarget);
         var shouldClose = !isOfSelf && isOpen && !isToggleBtn && !isUnifiedHeader;
 
         if (isOfSelf && this.element.tagName === 'A') {
